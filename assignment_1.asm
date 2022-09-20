@@ -21,7 +21,7 @@ main:
 	xor rax, rax
 	call printf
 	
-	lea rdi, [fmtin]
+	lea rdi, [fmt1in]
 	lea rsi, [x]
 	xor rax, rax
 	call scanf
