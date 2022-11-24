@@ -8,7 +8,7 @@
 #include <sched.h>
 
 // double time1, time2, time3;
-
+int t1, t2, t3;
 #define BILLION 1000000000;
 
 // void calcTimeDifference(struct timespec* tp1, struct timespec* tp2, struct timespec* result) {
@@ -18,8 +18,7 @@
 
 void* countA(void* args) {
 	struct sched_param sp1;
-	printf("a\n");
-	sp1.sched_priority = 19;
+	sp1.sched_priority = t1;
 	pthread_setschedparam(pthread_self(), SCHED_OTHER, &sp1);
 	unsigned int i = 1, limit = UINT_MAX;
 	struct timespec start, finish;
@@ -35,8 +34,7 @@ void* countA(void* args) {
 
 void* countB(void* args) {
 	struct sched_param sp2;
-	sp2.sched_priority = 1;
-	printf("b\n");
+	sp2.sched_priority = t2;
 	pthread_setschedparam(pthread_self(), SCHED_RR, &sp2);
 	unsigned int i = 1, limit = UINT_MAX;
 	struct timespec start, finish;
@@ -52,8 +50,7 @@ void* countB(void* args) {
 
 void* countC(void* args) {
 	struct sched_param sp3;
-	sp3.sched_priority = 99;
-	printf("c\n");
+	sp3.sched_priority = t3;
 	pthread_setschedparam(pthread_self(), SCHED_FIFO, &sp3);
 	unsigned int i = 1, limit = UINT_MAX;
 	struct timespec start, finish;
@@ -70,6 +67,7 @@ void* countC(void* args) {
 int main() {
 	pthread_t tid1, tid2, tid3;
 	double time1, time2, time3;
+	scanf("%d %d %d", &t1, &t2, &t3);
 	// struct sched_param sp1, sp2, sp3;
 	// struct timespec* tp1 = (struct timespec*) malloc(sizeof(struct timespec));
 	// struct timespec* tp2 = (struct timespec*) malloc(sizeof(struct timespec));
@@ -95,8 +93,6 @@ int main() {
 	pthread_create(&tid1, NULL, &countA, (void*) &time1);
 	pthread_create(&tid2, NULL, &countB, (void*) &time2);
 	pthread_create(&tid3, NULL, &countC, (void*) &time3);
-
-	
 
 	pthread_join(tid1, NULL);
 	pthread_join(tid2, NULL);
