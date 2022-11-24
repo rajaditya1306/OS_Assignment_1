@@ -3,16 +3,20 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/wait.h>
+#include <sched.h>
+
+int t1, t2, t3;
 
 #define BILLION 1000000000;
 
 int main() {
     pid_t p1, p2, p3;
+    scanf("%d %d %d", &t1, &t2, &t3);
     struct timespec start1, start2, start3, finish1, finish2, finish3;
     struct sched_param pa, pb, pc;
-    pa.sched_priority = 0;
-    pb.sched_priority = 1;
-    pc.sched_priority = 1;
+    pa.sched_priority = t1;
+    pb.sched_priority = t2;
+    pc.sched_priority = t3;
     double time1, time2, time3;
     
     p1 = fork();
