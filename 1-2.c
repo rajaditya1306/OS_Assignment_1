@@ -9,10 +9,16 @@
 int main() {
     pid_t p1, p2, p3;
     struct timespec start1, start2, start3, finish1, finish2, finish3;
+    struct sched_param pa, pb, pc;
+    pa.sched_priority = 0;
+    pb.sched_priority = 1;
+    pc.sched_priority = 1;
     double time1, time2, time3;
     
-    clock_gettime(CLOCK_REALTIME, &start1);
     p1 = fork();
+    sched_setscheduler(getpid(), SCHED_OTHER, &pa);
+    clock_gettime(CLOCK_REALTIME, &start1);
+
     if (p1 < 0) {
         fprintf(stderr, "Fork failed!!\n");
     }
@@ -21,8 +27,10 @@ int main() {
         execl("/bin/sh", "sh", "/home/strayweeb/OS_Assignment_1/compile1.sh", NULL);
     }
     else {
-        
         p2 = fork();
+        sched_setscheduler(getpid(), SCHED_FIFO, &pb);
+        clock_gettime(CLOCK_REALTIME, &start2);
+
         if (p2 < 0) {
             fprintf(stderr, "Fork failed!!\n");
         }
@@ -31,8 +39,10 @@ int main() {
             execl("/bin/sh", "sh", "/home/strayweeb/OS_Assignment_1/compile2.sh", NULL);
         }
         else {
-            clock_gettime(CLOCK_REALTIME, &start3);
             p3 = fork();
+            sched_setscheduler(getpid(), SCHED_RR, &pc);
+            clock_gettime(CLOCK_REALTIME, &start3);
+
             if (p3 < 0) {
                 fprintf(stderr, "Fork failed!!\n");
             }
@@ -53,4 +63,5 @@ int main() {
         clock_gettime(CLOCK_REALTIME, &finish1);
         time3 = (finish1.tv_sec - start1.tv_sec) + (double)(finish1.tv_nsec - start1.tv_nsec)/BILLION;  
     }
+    printf("%lf %lf %lf", time1, time2, time3);
 }
