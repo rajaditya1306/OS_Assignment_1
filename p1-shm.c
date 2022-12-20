@@ -39,6 +39,7 @@ char* generateRandomString(int string_len, int index) {
 int main() {
 	int len = 0, i, string_len = 7, a_index = -1, fd;
 	char** strings = (char**)malloc(sizeof(char*)*50);
+	struct timespec start, finish;
 
 	for (i = 0; i < 50; i++) {
 		strings[i] = generateRandomString(string_len, i);
