@@ -1,3 +1,9 @@
-1-2: 1-1.c, 1-2.c
-	gcc 1-1.c -o 1-1
-	gcc 1-2.c -o 1-2
+obj-m += proc-read.o
+
+PWD := $(CURDIR)
+
+all:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
+clean:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
